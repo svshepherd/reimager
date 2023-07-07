@@ -2,6 +2,7 @@
 
 import os
 import sys
+import shutil
 from PyQt5.QtWidgets import QApplication, QFileDialog, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt, QUrl
 from PIL import Image
@@ -18,6 +19,7 @@ class DropWidget(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(self.label)
         self.setLayout(layout)
+        self.resize(256, 256)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -42,6 +44,15 @@ class DropWidget(QWidget):
 
         # Rescale each image to the maximum resolution
         for image_file in image_files:
+            # Backup the original file
+            backup_file = image_file + '.bak'
+            if os.path.exists(backup_file):
+                i = 1
+                while os.path.exists(backup_file + str(i)):
+                    i += 1
+                backup_file += str(i)
+            shutil.copy(image_file, backup_file)
+
             print(f'...{image_file}...')
             with Image.open(image_file) as img:
                 resized_img = img.resize(max_res, Image.LANCZOS)
