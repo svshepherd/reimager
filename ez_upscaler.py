@@ -44,87 +44,32 @@ class DropWidget(QWidget):
 
         # Rescale each image to the maximum resolution
         for image_file in image_files:
-            # Backup the original file
-            backup_file = image_file + '.bak'
-            if os.path.exists(backup_file):
-                i = 1
-                while os.path.exists(backup_file + str(i)):
-                    i += 1
-                backup_file += str(i)
-            shutil.copy(image_file, backup_file)
+            # # Backup the original file
+            # backup_file = image_file + '.bak'
+            # if os.path.exists(backup_file):
+            #     i = 1
+            #     while os.path.exists(backup_file + str(i)):
+            #         i += 1
+            #     backup_file += str(i)
+            # shutil.copy(image_file, backup_file)
 
             print(f'...{image_file}...')
             with Image.open(image_file) as img:
                 resized_img = img.resize(max_res, Image.LANCZOS)
-                resized_img.save(image_file)
+                ## I'd like to add a _ before the filename in the image_file name which includes the path.
+                #new_name = image_file.split(os.sep)
+                new_name = image_file.split('/')
+                new_name[-1] = '_'+new_name[-1]
+                #new_name = os.sep.join(new_name)
+                new_name = '/'.join(new_name)
+                ##
+                resized_img.save(new_name)
 
-app = QApplication(sys.argv)
-widget = DropWidget()
-widget.show()
-app.exec_()
+def main():
+    app = QApplication(sys.argv)
+    widget = DropWidget()
+    widget.show()
+    app.exec_()
 
-# import os
-# import tkinter as tk
-# from tkinterdnd2 import DND_FILES, TkinterDnD
-# from PIL import Image
-
-# def drop(event):
-#     image_files = root.drop_source_files
-
-#     # Initialize the maximum resolution
-#     max_res = (0, 0)
-
-#     # Find the maximum resolution
-#     for image_file in image_files:
-#         with Image.open(image_file) as img:
-#             width, height = img.size
-#             max_res = (max(max_res[0], width), max(max_res[1], height))
-
-#     # Rescale each image to the maximum resolution
-#     for image_file in image_files:
-#         with Image.open(image_file) as img:
-#             resized_img = img.resize(max_res, Image.ANTIALIAS)
-#             resized_img.save(image_file)
-
-# # if __name__ == '__main__':
-#     root = TkinterDnD.Tk()
-#     root.withdraw()
-
-#     label = tk.Label(root, text='Drag and Drop Files Here', relief='raised')
-#     label.pack(fill='both', expand=True)
-#     label.drop_target_register(DND_FILES)
-#     label.dnd_bind('<<Drop>>', drop)
-
-#     root.mainloop()
-
-
-
-# import os
-# import tkinter as tk
-# from tkinter import filedialog
-# from PIL import Image
-
-# def rescale_images():
-#     # Open a file dialog and get a list of image files
-#     root = tk.Tk()
-#     root.withdraw()  # Hide the main window
-#     image_files = filedialog.askopenfilenames(filetypes=[('Image Files', '*.png;*.jpg;*.jpeg;*.tiff;*.bmp;*.gif')])
-
-#     # Initialize the maximum resolution
-#     max_res = (0, 0)
-
-#     # Find the maximum resolution
-#     for image_file in image_files:
-#         with Image.open(image_file) as img:
-#             width, height = img.size
-#             max_res = (max(max_res[0], width), max(max_res[1], height))
-
-#     # Rescale each image to the maximum resolution
-#     for image_file in image_files:
-#         with Image.open(image_file) as img:
-#             resized_img = img.resize(max_res, Image.ANTIALIAS)
-#             resized_img.save(image_file)
-
-# # Run the script
-# if __name__ == '__main__':
-#     rescale_images()
+if __name__ == '__main__':
+    main()
