@@ -28,9 +28,10 @@ def extract_date_taken(file):
                 return date_time_obj
     return None
 
-def main():
+if __name__ == '__main__':
+
     ## I'd like to assume this is the same directory from which the shortcut is clicked
-    PATHNAME = r'C:\Users\drsvs\Desktop\vis'
+    PATHNAME = r'F:\extended_desktop\viz'
 
     ## I'd like to display the files that will be affected, just to be careful
     files = [f for f in os.listdir(PATHNAME) if os.path.isfile(os.path.join(PATHNAME, f))] 
@@ -95,7 +96,3 @@ def main():
         #         print(file, "----X", e)
         # else: 
         #     print('  already processed or unanticipated name format: ', file)
-
-if __name__ == '__main__':
-    main()
-    
